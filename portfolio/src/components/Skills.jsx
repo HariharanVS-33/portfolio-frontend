@@ -1,68 +1,59 @@
+import { useEffect, useState } from "react";
 import "./Skills.css";
 
-function SkillCard({ title, skills }) {
-  return (
-    <div className="skill-card">
-      <h3>{title}</h3>
-
-      {skills.map((skill, index) => (
-        <div className="skill-item" key={index}>
-          <div className="skill-label">
-            <span>{skill.name}</span>
-            <span>{skill.level}%</span>
-          </div>
-
-          <div className="skill-bar">
-            <div
-              className="skill-progress"
-              style={{ "--target-width": `${skill.level}%` }}
-            ></div>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 function Skills() {
+  const [skillsGrouped, setSkillsGrouped] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/skills/`)
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load skills");
+        return res.json();
+      })
+      .then((data) => {
+        // Group skills by category preserving order
+        const grouped = data.reduce((acc, skill) => {
+          const cat = skill.category || "General";
+          if (!acc[cat]) {
+            acc[cat] = [];
+          }
+          acc[cat].push(skill.name);
+          return acc;
+        }, {});
+        setSkillsGrouped(grouped);
+        setLoading(false);
+      })
+      .catch(() => {
+        setError("Unable to load skills");
+        setLoading(false);
+      });
+  }, []);
+
   return (
     <section className="skills-section" id="skills">
       <h2>Skills</h2>
 
-      <div className="skills-grid">
-        <SkillCard
-          title="Frontend"
-          skills={[
-            { name: "HTML", level: 90 },
-            { name: "CSS", level: 70 },
-            { name: "React", level: 75 },
-          ]}
-        />
+      {loading && <p className="skills-status">Loading skills...</p>}
+      {error && <p className="skills-status error">{error}</p>}
 
-        <SkillCard
-          title="Backend"
-          skills={[
-            { name: "Python", level: 60 },
-            { name: "Django", level: 60 },
-          ]}
-        />
-
-        <SkillCard
-          title="Data Structures"
-          skills={[
-            { name: "C", level: 40 },
-          ]}
-        />
-
-        <SkillCard
-          title="Tools"
-          skills={[
-            { name: "Git", level: 60 },
-            { name: "GitHub", level: 80 },
-            { name: "VS Code", level: 90 },
-          ]}
-        />
-      </div>
+      {!loading && !error && (
+        <div className="skills-grid">
+          {Object.entries(skillsGrouped).map(([category, skillList]) => (
+            <div className="skill-card" key={category}>
+              <h3>{category}</h3>
+              <div className="skill-tags">
+                {skillList.map((skillName, index) => (
+                  <span className="skill-tag" key={index}>
+                    {skillName}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 }

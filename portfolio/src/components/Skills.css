@@ -5,9 +5,20 @@
 }
 
 .skills-section h2 {
-  font-size: 2rem;
+  font-size: 2.2rem;
   color: #38bdf8;
   margin-bottom: 40px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.skills-status {
+  color: #94a3b8;
+  font-size: 1rem;
+}
+
+.skills-status.error {
+  color: #f87171;
 }
 
 /* GRID */
@@ -22,59 +33,52 @@
 /* CARD */
 .skill-card {
   background-color: #0f172a;
-  padding: 25px 20px;
-  border-radius: 12px;
+  padding: 28px 24px;
+  border-radius: 14px;
   text-align: left;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(56, 189, 248, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 .skill-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 12px 30px rgba(56, 189, 248, 0.2);
+  box-shadow: 0 12px 30px rgba(56, 189, 248, 0.15);
+  border-color: rgba(56, 189, 248, 0.3);
 }
 
 .skill-card h3 {
   color: #38bdf8;
+  font-size: 1.25rem;
   margin-bottom: 20px;
+  font-weight: 600;
 }
 
-/* SKILL ITEM */
-.skill-item {
-  margin-bottom: 15px;
-}
-
-.skill-label {
+/* SKILL TAGS CONTAINER */
+.skill-tags {
   display: flex;
-  justify-content: space-between;
-  font-size: 0.9rem;
-  color: #e5e7eb;
-  margin-bottom: 6px;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
-/* BAR */
-.skill-bar {
-  background-color: #020617;
-  height: 8px;
-  border-radius: 10px;
-  overflow: hidden;
+/* SKILL TAG BADGE (NO PERCENTAGE BARS) */
+.skill-tag {
+  background: rgba(56, 189, 248, 0.08);
+  color: #e2e8f0;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  transition: all 0.25s ease;
+  user-select: none;
 }
 
-.skill-progress {
-  height: 100%;
-  background: linear-gradient(90deg, #38bdf8, #0ea5e9);
-  border-radius: 10px;
-  width: 0;
-  animation: fillBar 1.2s ease forwards;
-}
-
-/* ANIMATION */
-@keyframes fillBar {
-  from {
-    width: 0;
-  }
-  to {
-    width: var(--target-width);
-  }
+.skill-tag:hover {
+  background: rgba(56, 189, 248, 0.2);
+  color: #38bdf8;
+  border-color: #38bdf8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.25);
 }
 
 /* RESPONSIVE */
